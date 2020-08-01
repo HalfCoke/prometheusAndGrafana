@@ -1,0 +1,16 @@
+[Unit]
+  Description=grafana
+  Wants=network-online.target
+  After=network-online.target
+
+[Service]
+  User=grafana
+  Group=grafana
+  Type=simple
+  ExecStart=/usr/local/bin/grafana-server \
+  -homepath /etc/grafana/ \
+  -config /etc/grafana/conf/custom.ini
+  ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+  WantedBy=multi-user.target

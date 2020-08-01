@@ -1,0 +1,32 @@
+#!/bin/bash
+
+if [ `whoami` != "root" ]; then
+    echo "you must run by root!"
+    exit 1 
+fi
+
+if [ ! -f "grafana-7.1.1.linux-amd64.tar.gz" ]; then
+    wget https://dl.grafana.com/oss/release/grafana-7.1.1.linux-amd64.tar.gz
+fi
+tar -zxvf grafana-7.1.1.linux-amd64.tar.gz
+
+
+sudo useradd --no-create-home --shell /usr/sbin/nologin grafana
+sudo mkdir /etc/grafana
+sudo chown grafana:grafana /etc/grafana
+
+sudo cp -r grafana-7.1.1/* /etc/grafana
+sudo cp /etc/grafana/conf/sample.ini /etc/grafana/conf/custom.ini
+sudo chown -R grafana:grafana /etc/grafana
+
+rm -r grafana-7.1.1
+
+sudo ln -s /etc/grafana/bin/grafana-server /usr/local/bin/grafana-server
+sudo ln -s /etc/grafana/bin/grafana-cli /usr/local/bin/grafana-cli
+
+
+sudo cp -v grafana.service /etc/systemd/system/
+
+sudo systemctl daemon-reload
+sudo systemctl start grafana
+sudo systemctl enable grafana.service
