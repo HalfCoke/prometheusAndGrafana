@@ -35,30 +35,12 @@ Prometheus(普罗米修斯)主要用于指标的提取，Grafana用于展示界�
           - targets: ['localhost:9090']
     ```
 
-    b) *prometheus.service*
+    b) *prometheus*
     
     该文件主要需要配置**web.listen-address**选项，更改端口号可以改变Prometheus默认的web ui及监控系统默认的端口号
 
-    ```
-    [Unit]
-        Description=Prometheus Monitoring
-        Wants=network-online.target
-        After=network-online.target
-
-    [Service]
-        User=prometheus
-        Group=prometheus
-        Type=simple
-        ExecStart=/usr/local/bin/prometheus \
-        --config.file /etc/prometheus/prometheus.yml \
-        --storage.tsdb.path /var/lib/prometheus/ \
-        --web.console.templates=/etc/prometheus/consoles \
-        --web.console.libraries=/etc/prometheus/console_libraries \
-        --web.listen-address="0.0.0.0:9090"
-        ExecReload=/bin/kill -HUP $MAINPID
-
-    [Install]
-    WantedBy=multi-user.target
+    ```shell
+    port=9090
     ```
 
 2. Grafana配置

@@ -20,23 +20,19 @@ else
     tar -zxvf prometheus-2.19.3.linux-amd64.tar.gz
 fi
 
-sudo cp prometheus-2.19.3.linux-amd64/prometheus /usr/local/bin
-sudo cp prometheus-2.19.3.linux-amd64/promtool /usr/local/bin
 sudo cp -r prometheus-2.19.3.linux-amd64/consoles /etc/prometheus
 sudo cp -r prometheus-2.19.3.linux-amd64/console_libraries /etc/prometheus
 sudo cp prometheus.yml /etc/prometheus
 
 sudo chown prometheus:prometheus /etc/prometheus/prometheus.yml
-sudo chown prometheus:prometheus /usr/local/bin/prometheus
-sudo chown prometheus:prometheus /usr/local/bin/promtool
 sudo chown -R prometheus:prometheus /etc/prometheus/consoles
 sudo chown -R prometheus:prometheus /etc/prometheus/console_libraries
 
 
 rm -r prometheus-2.19.3.linux-amd64
 
-sudo cp -v prometheus.service /etc/systemd/system/
+sudo cp -v prometheus /etc/init.d/
 
-sudo systemctl daemon-reload
-sudo systemctl enable prometheus
-sudo systemctl start prometheus
+sudo service prometheus start
+sudo chkconfig --add prometheus
+sudo chkconfig prometheus on

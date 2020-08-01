@@ -1,0 +1,71 @@
+#!/bin/bash
+
+
+#
+# Comments to support chkconfig
+# chkconfig: 2345 98 02
+# description: node_exporter service script
+#
+# Source function library.
+. /etc/init.d/functions
+ 
+### Default variables
+prog_name="node_exporter"
+
+prog_path="/usr/local/bin/${prog_name}"
+
+pidfile="/var/run/${prog_name}.pid"
+prog_logs="/var/log/${prog_name}.log"
+options="--web.listen-address=:9100"
+DESC="node_exporter Server"
+
+# Check if requirements are met
+[ -x "${prog_path}" ] || exit 1
+ 
+RETVAL=0
+ 
+start(){
+  action $"Starting $DESC..." su -s /bin/sh -c "nohup $prog_path $options >> $prog_logs 2>&1 &" 2> /dev/null
+  RETVAL=$?
+  PID=$(pidof ${prog_path})
+  [ ! -z "${PID}" ] && echo ${PID} > ${pidfile}
+  echo
+  [ $RETVAL -eq 0 ] && touch /var/lock/subsys/$prog_name
+  return $RETVAL
+}
+ 
+stop(){
+  echo -n $"Shutting down $prog_name: "
+  killproc -p ${pidfile}
+  RETVAL=$?
+  echo
+  [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/$prog_name
+  return $RETVAL
+}
+ 
+restart() {
+  stop
+  start
+}
+ 
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    restart
+    ;;
+  status)
+    status $prog_path
+    RETVAL=$?
+    ;;
+  *)
+    echo $"Usage: $0 {start|stop|restart|status}"
+    RETVAL=1
+esac
+ 
+exit $RETVAL
+

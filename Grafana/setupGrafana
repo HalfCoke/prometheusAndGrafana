@@ -21,12 +21,11 @@ sudo chown -R grafana:grafana /etc/grafana
 
 rm -r grafana-7.1.1
 
-sudo ln -s /etc/grafana/bin/grafana-server /usr/local/bin/grafana-server
 sudo ln -s /etc/grafana/bin/grafana-cli /usr/local/bin/grafana-cli
 
 
-sudo cp -v grafana.service /etc/systemd/system/
+sudo cp -v grafana /etc/init.d/
 
-sudo systemctl daemon-reload
-sudo systemctl start grafana
-sudo systemctl enable grafana.service
+sudo service grafana start
+sudo chkconfig --add grafana
+sudo chkconfig grafana on
