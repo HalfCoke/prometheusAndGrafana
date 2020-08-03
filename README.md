@@ -6,13 +6,14 @@ Prometheus(普罗米修斯)主要用于指标的提取，Grafana用于展示界�
 
 主节点需额外安装Prometheus与Grafana，被监测节点需安装Node_Exporter，如需监测主节点则需要在主节点上也安装Node_Exporter。(虽然可以直接使用Prometheus的默认端口监控主节点，但为了配置一致性，建议在所有受控节点上都安装Node_Exporter)
 
+注：centos7等使用systemctl控制服务的说明文档请访问[链接](https://github.com/HalfCoke/prometheusAndGrafana/tree/v1.0)
 
 ## 配置相关
 ### 主节点配置
 #### 安装前配置
 1. Prometheus配置
 
-    安装前请先配置Prometheus文件夹下的 *prometheus.yml* 与*prometheus.service*文件。
+    安装前请先配置Prometheus文件夹下的 *prometheus.yml*文件。
     
     a) *prometheus.yml* 
     
