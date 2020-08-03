@@ -14,10 +14,11 @@ prog_name="prometheus"
 
 config_file="/etc/${prog_name}/${prog_name}.yml"
 prog_path="/etc/${prog_name}/${prog_name}"
+prog_home="/etc/${prog_name}"
 data_path="/var/lib/${prog_name}/"
 pidfile="/var/run/${prog_name}.pid"
 prog_logs="/var/log/${prog_name}.log"
-options="--web.listen-address=localhost:9090 --config.file=${config_file} --web.enable-lifecycle --storage.tsdb.path=${data_path} --web.console.libraries=${prog_path}/console_libraries --web.console.templates=${prog_path}/consoles"
+options="--web.listen-address=localhost:9090 --config.file=${config_file} --web.enable-lifecycle --storage.tsdb.path=${data_path} --web.console.libraries=${prog_home}/console_libraries --web.console.templates=${prog_home}/consoles"
 DESC="Prometheus Server"
 
 # Check if requirements are met

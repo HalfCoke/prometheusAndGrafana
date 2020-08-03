@@ -40,7 +40,7 @@ Prometheus(普罗米修斯)主要用于指标的提取，Grafana用于展示界�
     该文件主要需要配置**web.listen-address**选项，更改端口号可以改变Prometheus默认的web ui及监控系统默认的端口号
 
     ```shell
-    port=9090
+    --web.listen-address=localhost:9090
     ```
 
 2. Grafana配置
@@ -51,16 +51,14 @@ Prometheus(普罗米修斯)主要用于指标的提取，Grafana用于展示界�
     a) 更改Prometheus配置文件及添加受控节点
     
     需要更改路径`/etc/prometheus/prometheus.yml`的配置文件。
-    更改完成后需要执行`sudo systemctl restart prometheus`或`sudo service prometheus restart`
+    更改完成后需要执行`sudo service prometheus restart`
     b) 更改Prometheus监控系统默认端口及web ui端口
 
-    需要更改路径`/etc/systemd/system/prometheus.service`文件。
+    需要更改路径`/etc/init.d/prometheus`文件。
     
-    更改完成后请依次执行
-    ```
-    sudo systemctl daemon-reload
-    sudo systemctl restart prometheus
-    ```
+    更改完成后请执行`sudo service prometheus restart`
+
+
 2. 修改Grafana配置
 
     修改grafana配置请修改路径`/etc/grafana/conf/custom.ini`文件，详细内容请参考[官方文档](https://grafana.com/docs/grafana/latest/administration/configuration/)
@@ -79,40 +77,24 @@ Prometheus(普罗米修斯)主要用于指标的提取，Grafana用于展示界�
     # The http port  to use
     http_port = 3010
     ```
-    更改完成后需要执行`sudo systemctl restart grafana`或`sudo service grafana restart`
+    更改完成后需要执行`sudo service grafana restart`
 
 ### 受控节点配置
 #### 安装前配置
 ##### Node_Exporter配置
-主要是修改Node_Exporter汇报的端口配置，需要修改文件夹Node_Exporter文件夹下的*node_exporter.service*文件。
+主要是修改Node_Exporter汇报的端口配置，需要修改文件夹Node_Exporter文件夹下的*node_exporter*文件。
 
 修改其中的**web.liste-address**选项后的端口号。
 ```
-[Unit]
-Description=Node Exporter
-Wants=network-online.target
-After=network-online.target
-
-[Service]
-User=node_exporter
-Group=node_exporter
-Type=simple
-ExecStart=/usr/local/bin/node_exporter \
---web.listen-address=":9100"
-
-[Install]
-WantedBy=multi-user.target
+options="--web.listen-address=:9100"
 ```
 
 #### 安装后修改配置
 
-需要更改路径`/etc/systemd/system/node_exporter.service`文件。
+需要更改路径`/etc/init.d/node_exporter`文件。
     
-更改完成后请依次执行
-```
-sudo systemctl daemon-reload
-sudo systemctl restart node_exporter
-```
+更改完成后请依次执行`sudo service node_exporter restart`
+
 
 ## 安装
 ### 主控节点安装

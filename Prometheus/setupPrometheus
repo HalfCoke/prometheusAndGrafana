@@ -20,13 +20,10 @@ else
     tar -zxvf prometheus-2.19.3.linux-amd64.tar.gz
 fi
 
-sudo cp -r prometheus-2.19.3.linux-amd64/consoles /etc/prometheus
-sudo cp -r prometheus-2.19.3.linux-amd64/console_libraries /etc/prometheus
-sudo cp prometheus.yml /etc/prometheus
+sudo cp -r prometheus-2.19.3.linux-amd64/* /etc/prometheus
 
-sudo chown prometheus:prometheus /etc/prometheus/prometheus.yml
-sudo chown -R prometheus:prometheus /etc/prometheus/consoles
-sudo chown -R prometheus:prometheus /etc/prometheus/console_libraries
+
+sudo chown -R prometheus:prometheus /etc/prometheus
 
 
 rm -r prometheus-2.19.3.linux-amd64
